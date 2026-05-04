@@ -1,0 +1,49 @@
+<!-- ===================== DEMO.HTML ===================== -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Volver</a>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <h2>Demo interactiva</h2>
+
+  <audio id="player" controls class="w-100 mb-3">
+    <source id="audioSource" src="audio1.wav" type="audio/wav">
+  </audio>
+
+  <select class="form-select" onchange="cambiarAudio(this.value)">
+    <option value="audio1.wav">Audio 1</option>
+    <option value="audio2.wav">Audio 2</option>
+    <option value="audio3.wav">Audio 3</option>
+  </select>
+
+  <button class="btn btn-primary mt-3" onclick="reproducirAudio()">▶️ Reproducir</button>
+</div>
+
+<script>
+function cambiarAudio(src) {
+  const player = document.getElementById("player");
+  const source = document.getElementById("audioSource");
+  source.src = src;
+  player.load();
+}
+
+function reproducirAudio() {
+  document.getElementById("player").play();
+}
+</script>
+
+</body>
+</html>
+

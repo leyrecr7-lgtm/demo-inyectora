@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detección de Fases - Inyectora</title>
+
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: #f5f7fa;
+    }
+    .hero {
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .card {
+      border-radius: 15px;
+    }
+    .result-box {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Detección de Fases de Inyección</h1>
+  <p>Proyecto basado en análisis de audio y Machine Learning</p>
+</div>
+
+<div class="container mt-5">
+
+  <!-- DEMO -->
+  <div class="card p-4 mb-4">
+    <h3>🎧 Demo interactiva</h3>
+    <p>Selecciona un audio y reprodúcelo. El sistema físico lo detectará mediante micrófono.</p>
+
+    <audio id="player" controls class="w-100 mb-3">
+      <source id="audioSource" src="audio1.wav" type="audio/wav">
+    </audio>
+
+    <select class="form-select" onchange="cambiarAudio(this.value)">
+      <option value="audio1.wav">Audio 1 - Ciclo completo</option>
+      <option value="audio2.wav">Audio 2 - Variante</option>
+      <option value="audio3.wav">Audio 3 - Ruido añadido</option>
+    </select>
+
+    <button class="btn btn-primary mt-3" onclick="reproducirAudio()">▶️ Reproducir audio</button>
+
+    <div class="result-box text-success" id="estado">
+      Esperando reproducción...
+    </div>
+  </div>
+
+  <!-- RESULTADOS -->
+  <div class="card p-4 mb-4">
+    <h3>📊 Resultados</h3>
+    <p>Ejemplo de métricas del modelo:</p>
+    <img src="grafica.png" class="img-fluid">
+  </div>
+
+  <!-- MULTIMEDIA -->
+  <div class="card p-4 mb-4">
+    <h3>🎥 Multimedia</h3>
+    <video controls class="w-100">
+      <source src="video.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- INFO -->
+  <div class="card p-4 mb-4">
+    <h3>📘 Sobre el proyecto</h3>
+    <p>
+      Este proyecto detecta automáticamente las fases de una máquina inyectora de plásticos 
+      mediante el análisis de audio. Se utilizan modelos entrenados en MATLAB a partir de 
+      grabaciones reales del proceso.
+    </p>
+  </div>
+
+</div>
+
+<script>
+function cambiarAudio(src) {
+  const player = document.getElementById("player");
+  const source = document.getElementById("audioSource");
+
+  source.src = src;
+  player.load();
+
+  document.getElementById("estado").innerText = "Audio cargado. Listo para reproducir.";
+}
+
+function reproducirAudio() {
+  const player = document.getElementById("player");
+  player.play();
+
+  document.getElementById("estado").innerText = "Reproduciendo... El sistema físico está escuchando.";
+
+  setTimeout(() => {
+    document.getElementById("estado").innerText = "Procesamiento en curso...";
+  }, 2000);
+
+  setTimeout(() => {
+    document.getElementById("estado").innerText = "Fase detectada: INYECCIÓN (ejemplo)";
+  }, 5000);
+}
+</script>
+
+</body>
+</html>
