@@ -1,49 +1,90 @@
-<!-- ===================== DEMO.HTML ===================== -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Demo | Sensor acústico para inyectora</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
+<body class="subpage">
+  <nav class="topbar topbar-solid" aria-label="Navegación principal">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Sensor Inyectora</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#funciona">Funcionamiento</a>
+      <a href="resultados.html">Resultados</a>
+      <a href="multimedia.html">Multimedia</a>
+    </div>
+  </nav>
 
-<nav class="navbar navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand" href="index.html">Volver</a>
-  </div>
-</nav>
+  <main>
+    <section class="section subpage-hero" aria-labelledby="demo-page-title">
+      <div class="container narrow">
+        <p class="section-kicker">Demo interactiva</p>
+        <h1 id="demo-page-title">Prueba los audios del ciclo de la inyectora.</h1>
+        <p>
+          La prueba simula la lectura continua del sensor acústico: usamos un audio completo ya
+          preparado y la interfaz va mostrando en qué fase estaría la inyectora en cada momento.
+        </p>
+      </div>
+    </section>
 
-<div class="container mt-5">
-  <h2>Demo interactiva</h2>
+    <section class="section">
+      <div class="container demo-page-grid">
+        <article class="demo-panel large-panel" aria-label="Reproductor de audios de prueba">
+          <div class="phase-live-preview" aria-hidden="true">
+            <span class="phase-dot phase-dot-close" data-demo-phase="cierre"></span>
+            <span class="phase-dot phase-dot-load" data-demo-phase="carga"></span>
+            <span class="phase-dot phase-dot-back" data-demo-phase="retroceso"></span>
+            <span class="phase-dot phase-dot-open" data-demo-phase="apertura"></span>
+          </div>
+          <audio id="player" controls>
+            <source id="audioSource" src="audio1.wav" type="audio/wav">
+          </audio>
+          <label class="field-label" for="audioSelect">Audio de prueba</label>
+          <select id="audioSelect" class="select-field">
+            <option value="audio1.wav">Audio 1 - ciclo completo</option>
+            <option value="audio2.wav">Audio 2 - variante</option>
+            <option value="audio3.wav">Audio 3 - ruido añadido</option>
+          </select>
+          <button class="button button-primary full-width" type="button" id="playButton">Reproducir audio</button>
+          <p class="status-text" id="estado" aria-live="polite">Audio cargado. Listo para reproducir.</p>
+          <div class="status-track" aria-hidden="true">
+            <span id="statusBar"></span>
+          </div>
+          <div class="demo-monitor" aria-label="Salida sincronizada del clasificador">
+            <div class="monitor-header">
+              <span>Predicción del ciclo</span>
+              <strong id="cycleClock">0,0 s / 39,6 s</strong>
+            </div>
+            <div class="phase-output">
+              <span class="phase-badge" id="phaseBadge">En espera</span>
+              <strong id="phaseReadout">Esperando audio</strong>
+              <p id="phaseLiveDescription">Pulsa reproducir para ver cómo el sistema va siguiendo el ciclo de la máquina sobre un audio completo.</p>
+            </div>
+            <div class="phase-timeline" id="phaseTimeline" aria-label="Línea temporal de fases"></div>
+          </div>
+        </article>
 
-  <audio id="player" controls class="w-100 mb-3">
-    <source id="audioSource" src="audio1.wav" type="audio/wav">
-  </audio>
+        <aside class="process-note">
+          <h2>Qué representa la demo</h2>
+          <p>
+            En el prototipo real, el micrófono recibiría sonido de forma continua. Aquí usamos un
+            audio de ejemplo ya cargado para enseñar la misma idea: el sistema escucha, avanza con
+            el ciclo y va indicando la fase estimada de la máquina.
+          </p>
+          <div class="mini-metrics">
+            <span><strong>0,2 s</strong> ventana</span>
+            <span><strong>0,4 s</strong> retardo</span>
+            <span><strong>4</strong> fases</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
 
-  <select class="form-select" onchange="cambiarAudio(this.value)">
-    <option value="audio1.wav">Audio 1</option>
-    <option value="audio2.wav">Audio 2</option>
-    <option value="audio3.wav">Audio 3</option>
-  </select>
-
-  <button class="btn btn-primary mt-3" onclick="reproducirAudio()">▶️ Reproducir</button>
-</div>
-
-<script>
-function cambiarAudio(src) {
-  const player = document.getElementById("player");
-  const source = document.getElementById("audioSource");
-  source.src = src;
-  player.load();
-}
-
-function reproducirAudio() {
-  document.getElementById("player").play();
-}
-</script>
-
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
-
