@@ -15,7 +15,7 @@ Esta carpeta contiene la página web pensada para enlazar desde el QR del póste
 - `assets/js/app.js`: interacción de la página.
 - `assets/audio/`: audios de prueba de la demo.
 - `assets/media/`: imagen y vídeo de la máquina.
-- `assets/img/`: gráficas, espectrograma y visualizaciones SVG.
+- `assets/img/`: logo de Acufase, gráficas, espectrograma y visualizaciones SVG.
 
 ## Demo sincronizada
 
