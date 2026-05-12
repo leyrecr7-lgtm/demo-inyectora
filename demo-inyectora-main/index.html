@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Web del sensor acústico para detectar fases y posibles fallos en una inyectora mediante análisis de audio y aprendizaje automático.">
+  <title>Acufase | Detección de fases</title>
+  <link rel="preload" as="image" href="assets/media/maquina.jpg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+  <header class="site-hero">
+    <nav class="topbar" aria-label="Navegación principal">
+      <a class="brand" href="index.html" aria-label="Inicio">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name">Acufase</span>
+          <span class="brand-tagline">Escucha-Protege-Ahorra</span>
+        </span>
+      </a>
+      <div class="nav-links">
+        <a href="#funciona">Funcionamiento</a>
+        <a href="#resultados">Resultados</a>
+        <a href="#demo">Demo</a>
+        <a href="multimedia.html">Multimedia</a>
+      </div>
+    </nav>
+
+    <section class="hero-content" aria-labelledby="hero-title">
+      <p class="eyebrow">Monitorización acústica inteligente</p>
+      <h1 id="hero-title">Acufase</h1>
+      <p class="hero-copy">
+        Nuestro sistema escucha el ciclo de la máquina, divide el audio en ventanas muy cortas
+        y estima en qué fase está el proceso para detectar comportamientos anómalos.
+      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#funciona">Ver cómo funciona</a>
+        <a class="button button-secondary" href="#demo">Probar audios</a>
+      </div>
+      <dl class="hero-metrics" aria-label="Resumen del sistema">
+        <div>
+          <dt>0,2 s</dt>
+          <dd>ventanas de audio</dd>
+        </div>
+        <div>
+          <dt>0,4 s</dt>
+          <dd>retardo temporal</dd>
+        </div>
+        <div>
+          <dt>4 fases</dt>
+          <dd>ciclo monitorizado</dd>
+        </div>
+      </dl>
+
+      <div class="lab-status-panel" aria-label="Estado del prototipo">
+        <div>
+          <span>Entrada</span>
+          <strong>Audio industrial</strong>
+        </div>
+        <div>
+          <span>Procesado</span>
+          <strong>MFCC · ZCR · Energía</strong>
+        </div>
+        <div>
+          <span>Salida</span>
+          <strong>Fase + aviso</strong>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="section section-summary" aria-labelledby="summary-title">
+      <div class="container summary-grid">
+        <div>
+          <p class="section-kicker">Para quien escanea el QR</p>
+          <h2 id="summary-title">Una explicación rápida, visual y directa del sensor.</h2>
+        </div>
+        <p>
+          La web resume el proyecto sin entrar en código: qué mide el sensor, qué fases reconoce,
+          cómo toma decisiones en continuo y qué resultados obtiene con grabaciones reales de la inyectora.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="funciona" aria-labelledby="funciona-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker">Funcionamiento</p>
+          <h2 id="funciona-title">Del sonido de la máquina a una fase del ciclo.</h2>
+        </div>
+
+        <figure class="workflow-figure">
+          <img src="assets/img/flujo-trabajo-acufase.jpeg" alt="Flujo de trabajo de Acufase desde la inyectora y LabVIEW hasta MATLAB y el resultado">
+          <figcaption>
+            Camino de trabajo del proyecto: captura de audio, envío inalámbrico, almacenamiento,
+            análisis en MATLAB y salida con fase detectada o posible anomalía.
+          </figcaption>
+        </figure>
+
+        <div class="process-grid">
+          <article class="process-step">
+            <span class="step-number">01</span>
+            <h3>Captura acústica</h3>
+            <p>Un micrófono registra el sonido del proceso de inyección sin modificar la máquina.</p>
+            <p class="plain-explain">Como escuchar la máquina para reconocer su “firma sonora”.</p>
+          </article>
+          <article class="process-step">
+            <span class="step-number">02</span>
+            <h3>Ventanas de 0,2 s</h3>
+            <p>El audio se fragmenta en muestras cortas para poder trabajar casi en tiempo real.</p>
+            <p class="plain-explain">En vez de analizar todo de golpe, se mira el sonido en pequeños trozos.</p>
+          </article>
+          <article class="process-step">
+            <span class="step-number">03</span>
+            <h3>Características de audio</h3>
+            <p>Se extraen MFCC, energía, ZCR y rasgos espectrales que describen cada sonido.</p>
+            <p class="plain-explain">Son números que resumen cómo suena cada fragmento: intensidad, tono y cambios.</p>
+          </article>
+          <article class="process-step">
+            <span class="step-number">04</span>
+            <h3>Modelo temporal</h3>
+            <p>El clasificador estima la fase y una máquina de estados evita saltos no físicos.</p>
+            <p class="plain-explain">Comprueba que la secuencia tenga sentido dentro del ciclo real.</p>
+          </article>
+        </div>
+
+        <div class="phase-strip" aria-label="Fases del proceso">
+          <button class="phase phase-close is-active" type="button" data-phase="cierre">
+            <span>Cierre</span>
+            <small>la máquina se prepara</small>
+          </button>
+          <button class="phase phase-load" type="button" data-phase="carga">
+            <span>Carga</span>
+            <small>material en avance</small>
+          </button>
+          <button class="phase phase-back" type="button" data-phase="retroceso">
+            <span>Retroceso</span>
+            <small>recuperación del sistema</small>
+          </button>
+          <button class="phase phase-open" type="button" data-phase="apertura">
+            <span>Apertura</span>
+            <small>fin del ciclo</small>
+          </button>
+        </div>
+
+        <article class="phase-inspector" aria-live="polite">
+          <div>
+            <p class="section-kicker">Fase seleccionada</p>
+            <h3 id="phaseTitle">Cierre</h3>
+            <p id="phaseDescription">La máquina se cierra y prepara el molde. El sonido suele ser estable y marca el inicio del ciclo.</p>
+          </div>
+          <dl>
+            <div>
+              <dt>Duración ejemplo</dt>
+              <dd id="phaseDuration">14,2 s</dd>
+            </div>
+            <div>
+              <dt>Señal esperada</dt>
+              <dd id="phaseSignal">Arranque mecánico claro</dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-dark" aria-labelledby="sensor-title">
+      <div class="container split-layout">
+        <div>
+          <p class="section-kicker">Lectura del sensor</p>
+          <h2 id="sensor-title">La señal de audio se convierte en diagnóstico.</h2>
+          <p>
+            El sistema conserva el orden real del ciclo:
+            cierre, carga, retroceso y apertura. Si una predicción propone un salto imposible,
+            la decisión temporal lo bloquea y mantiene una salida más estable.
+          </p>
+        </div>
+        <div class="diagnostic-list" aria-label="Datos de diagnóstico">
+          <div>
+            <strong>Fase temporal</strong>
+            <span>Salida suavizada para visualizar el estado de la inyectora.</span>
+            <small>Es la fase final que enseñamos después de corregir predicciones aisladas.</small>
+          </div>
+          <div>
+            <strong>Confianza por clase</strong>
+            <span>Probabilidad estimada para cada fase detectada.</span>
+            <small>Indica cuánto “cree” el modelo que el sonido pertenece a cada fase.</small>
+          </div>
+          <div>
+            <strong>Posible anomalía</strong>
+            <span>Aviso cuando la fase de carga no evoluciona como debería.</span>
+            <small>No confirma un fallo por sí solo, pero marca algo que conviene revisar.</small>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="sensor-flow" aria-label="Flujo interactivo del sistema">
+          <button class="flow-node is-active" type="button" data-flow="0">
+            <span>01</span>
+            Micrófono
+          </button>
+          <button class="flow-node" type="button" data-flow="1">
+            <span>02</span>
+            Ventanas 0,2 s
+          </button>
+          <button class="flow-node" type="button" data-flow="2">
+            <span>03</span>
+            Características
+          </button>
+          <button class="flow-node" type="button" data-flow="3">
+            <span>04</span>
+            Diagnóstico
+          </button>
+        </div>
+        <p class="flow-caption" id="flowCaption">El sensor recoge el sonido de la inyectora sin intervenir en el proceso.</p>
+      </div>
+    </section>
+
+    <section class="section spectral-section" aria-labelledby="spectral-title">
+      <div class="container spectral-grid">
+        <div>
+          <p class="section-kicker">Análisis acústico</p>
+          <h2 id="spectral-title">Así se ve un audio completo cuando lo analizamos por frecuencias.</h2>
+          <p>
+            El espectrograma muestra cómo cambia la energía del sonido a lo largo del tiempo.
+            En este ejemplo se representa el archivo completo de 39,6 s: las zonas amarillas
+            concentran más energía y las azules indican menor intensidad.
+          </p>
+          <p class="simple-definition">
+            En sencillo: es una “foto del sonido”. De izquierda a derecha avanza el tiempo,
+            y de abajo a arriba aparecen frecuencias más altas.
+          </p>
+          <div class="spectral-legend" aria-label="Leyenda del espectrograma">
+            <span><i class="legend-high"></i>Alta energía</span>
+            <span><i class="legend-mid"></i>Cambio de banda</span>
+            <span><i class="legend-low"></i>Baja energía</span>
+          </div>
+        </div>
+        <figure class="result-figure spectral-card">
+          <img src="assets/img/espectrograma-audio1.svg" alt="Diagrama espectral generado desde el audio 1">
+          <figcaption>Espectrograma del audio completo usado como ejemplo del análisis.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="resultados" aria-labelledby="resultados-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker">Resultados</p>
+          <h2 id="resultados-title">Rendimiento entrenado con audios reales.</h2>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span>Accuracy</span>
+            <strong>88,2%</strong>
+            <p>Mejor configuración SVM RBF con todas las características.</p>
+            <p class="metric-explain">Porcentaje total de aciertos del modelo.</p>
+          </article>
+          <article class="stat-card">
+            <span>Macro F1</span>
+            <strong>0,79</strong>
+            <p>Medida global equilibrada entre las clases del ciclo.</p>
+            <p class="metric-explain">Resume precisión y detección por fase sin favorecer solo a la clase más frecuente.</p>
+          </article>
+          <article class="stat-card">
+            <span>Audios OK</span>
+            <strong>49/56</strong>
+            <p>Clasificación continua revisada en grabaciones de prueba.</p>
+            <p class="metric-explain">Audios donde el comportamiento detectado se considera coherente.</p>
+          </article>
+        </div>
+
+        <div class="result-explainer">
+          <article>
+            <h3>¿Qué es una matriz de confusión?</h3>
+            <p>Es una tabla que compara lo que era realmente cada fase con lo que predijo el modelo. La diagonal indica los aciertos.</p>
+          </article>
+          <article>
+            <h3>¿Qué son las fases temporales?</h3>
+            <p>Es la evolución de la fase detectada a lo largo del audio, como una línea de tiempo del ciclo de la inyectora.</p>
+          </article>
+        </div>
+
+        <div class="result-tabs" role="tablist" aria-label="Visualizaciones de resultados">
+          <button class="result-tab is-active" type="button" data-result="matrix">Matriz de confusión</button>
+          <button class="result-tab" type="button" data-result="timeline">Fases temporales</button>
+        </div>
+
+        <div class="visual-grid result-panels">
+          <figure class="result-figure result-panel is-active" data-result-panel="matrix">
+            <img src="assets/img/matriz-confusion-fases.svg" alt="Matriz de confusión del clasificador acústico sin ruido previo">
+            <figcaption>Matriz de confusión del mejor modelo entrenado, mostrando solo fases del proceso.</figcaption>
+          </figure>
+          <figure class="result-figure result-panel" data-result-panel="timeline">
+            <img src="assets/img/test11-fases-sin-ruido.svg" alt="Secuencia temporal de fases detectadas en el audio test11 sin ruido previo">
+            <figcaption>Ejemplo temporal con cierre, carga, retroceso y apertura.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-media" id="demo" aria-labelledby="demo-title">
+      <div class="container media-grid">
+        <div>
+          <p class="section-kicker">Demo</p>
+          <h2 id="demo-title">Escucha ejemplos usados para probar la detección.</h2>
+          <p>
+            Esta demo aproxima el comportamiento del sistema real: parte de un audio ya cargado,
+            como si estuviera llegando desde el sensor acústico, y actualiza la fase detectada
+            a medida que avanza el ciclo de la máquina.
+          </p>
+          <a class="button button-secondary button-inline" href="demo.html">Abrir demo completa</a>
+        </div>
+
+        <article class="demo-panel" aria-label="Reproductor de audios de prueba">
+          <div class="phase-live-preview" aria-hidden="true">
+            <span class="phase-dot phase-dot-close" data-demo-phase="cierre"></span>
+            <span class="phase-dot phase-dot-load" data-demo-phase="carga"></span>
+            <span class="phase-dot phase-dot-back" data-demo-phase="retroceso"></span>
+            <span class="phase-dot phase-dot-open" data-demo-phase="apertura"></span>
+          </div>
+          <audio id="player" controls>
+            <source id="audioSource" src="assets/audio/audio1.wav" type="audio/wav">
+          </audio>
+          <label class="field-label" for="audioSelect">Audio de prueba</label>
+          <select id="audioSelect" class="select-field">
+            <option value="assets/audio/audio1.wav">Audio 1</option>
+            <option value="assets/audio/audio2.wav">Audio 2</option>
+            <option value="assets/audio/audio3.wav">Audio 3</option>
+          </select>
+          <button class="button button-primary full-width" type="button" id="playButton">Reproducir audio</button>
+          <p class="status-text" id="estado" aria-live="polite">Audio cargado. Listo para reproducir.</p>
+          <div class="status-track" aria-hidden="true">
+            <span id="statusBar"></span>
+          </div>
+          <div class="demo-monitor" aria-label="Salida sincronizada del clasificador">
+            <div class="monitor-header">
+              <span>Predicción del ciclo</span>
+              <strong id="cycleClock">0,0 s / 39,6 s</strong>
+            </div>
+            <div class="phase-output">
+              <span class="phase-badge" id="phaseBadge">En espera</span>
+              <strong id="phaseReadout">Esperando audio</strong>
+              <p id="phaseLiveDescription">Pulsa reproducir para ver cómo el sistema va siguiendo el ciclo de la máquina sobre un audio completo.</p>
+            </div>
+            <div class="phase-timeline" id="phaseTimeline" aria-label="Línea temporal de fases"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="media-title">
+      <div class="container media-showcase">
+        <div class="section-heading">
+          <p class="section-kicker">Multimedia</p>
+          <h2 id="media-title">La máquina y el proceso, de un vistazo.</h2>
+        </div>
+        <div class="visual-grid">
+          <figure class="result-figure">
+            <video controls preload="metadata" poster="assets/media/maquina.jpg">
+              <source src="assets/media/video.mp4" type="video/mp4">
+            </video>
+            <figcaption>Vídeo del entorno de trabajo del proyecto.</figcaption>
+          </figure>
+          <figure class="result-figure machine-figure">
+            <img src="assets/media/maquina.jpg" alt="Máquina inyectora de plástico monitorizada por el sensor acústico">
+            <button class="hotspot hotspot-mic" type="button" data-hotspot="captura" aria-label="Ver punto de captura"></button>
+            <button class="hotspot hotspot-mold" type="button" data-hotspot="molde" aria-label="Ver zona del molde"></button>
+            <button class="hotspot hotspot-control" type="button" data-hotspot="control" aria-label="Ver sistema de control"></button>
+            <div class="hotspot-card" id="hotspotCard" aria-live="polite">
+              <strong>Captura acústica</strong>
+              <span>El micrófono escucha el ciclo sin tocar la máquina.</span>
+            </div>
+            <figcaption>Inyectora usada como referencia visual del sistema.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section glossary-section" aria-labelledby="glossary-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker">Diccionario rápido</p>
+          <h2 id="glossary-title">Conceptos clave en palabras simples.</h2>
+        </div>
+        <div class="glossary-grid">
+          <article>
+            <h3>Sensor acústico</h3>
+            <p>Un sistema que usa el sonido de la máquina para entender qué está pasando.</p>
+          </article>
+          <article>
+            <h3>Machine Learning</h3>
+            <p>Un modelo aprende patrones a partir de ejemplos y luego reconoce casos nuevos.</p>
+          </article>
+          <article>
+            <h3>MFCC</h3>
+            <p>Una forma de convertir el sonido en números parecidos a cómo distinguimos timbres.</p>
+          </article>
+          <article>
+            <h3>ZCR</h3>
+            <p>Mide cuántas veces la señal cambia de signo; ayuda a describir sonidos bruscos o suaves.</p>
+          </article>
+          <article>
+            <h3>Energía</h3>
+            <p>Una medida de la intensidad del sonido en cada fragmento de audio.</p>
+          </article>
+          <article>
+            <h3>SVM</h3>
+            <p>Un tipo de clasificador que separa datos en grupos, en este caso las fases del ciclo.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>Acufase</strong>
+        <p>Proyecto de análisis de audio y Machine Learning para monitorizar fases del ciclo.</p>
+      </div>
+      <a href="#hero-title">Volver arriba</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
