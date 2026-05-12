@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Web del sensor acústico para detectar fases y posibles fallos en una inyectora mediante análisis de audio y aprendizaje automático.">
-  <title>Sensor acústico para inyectora | Detección de fases</title>
+  <title>Acufase | Detección de fases</title>
   <link rel="preload" as="image" href="assets/media/maquina.jpg">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
@@ -14,7 +14,10 @@
     <nav class="topbar" aria-label="Navegación principal">
       <a class="brand" href="index.html" aria-label="Inicio">
         <span class="brand-mark" aria-hidden="true"></span>
-        <span>Sensor Inyectora</span>
+        <span class="brand-text">
+          <span class="brand-name">Acufase</span>
+          <span class="brand-tagline">Escucha-Protege-Ahorra</span>
+        </span>
       </a>
       <div class="nav-links">
         <a href="#funciona">Funcionamiento</a>
@@ -25,8 +28,8 @@
     </nav>
 
     <section class="hero-content" aria-labelledby="hero-title">
-      <p class="eyebrow">Detección automática de fallos en procesos de inyección</p>
-      <h1 id="hero-title">Sensor acústico para inyectora</h1>
+      <p class="eyebrow">Monitorización acústica inteligente</p>
+      <h1 id="hero-title">Acufase</h1>
       <p class="hero-copy">
         Nuestro sistema escucha el ciclo de la máquina, divide el audio en ventanas muy cortas
         y estima en qué fase está el proceso para detectar comportamientos anómalos.
@@ -87,6 +90,14 @@
           <p class="section-kicker">Funcionamiento</p>
           <h2 id="funciona-title">Del sonido de la máquina a una fase del ciclo.</h2>
         </div>
+
+        <figure class="workflow-figure">
+          <img src="assets/img/flujo-trabajo-acufase.jpeg" alt="Flujo de trabajo de Acufase desde la inyectora y LabVIEW hasta MATLAB y el resultado">
+          <figcaption>
+            Camino de trabajo del proyecto: captura de audio, envío inalámbrico, almacenamiento,
+            análisis en MATLAB y salida con fase detectada o posible anomalía.
+          </figcaption>
+        </figure>
 
         <div class="process-grid">
           <article class="process-step">
@@ -407,7 +418,7 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <strong>Sensor acústico para inyectora</strong>
+        <strong>Acufase</strong>
         <p>Proyecto de análisis de audio y Machine Learning para monitorizar fases del ciclo.</p>
       </div>
       <a href="#hero-title">Volver arriba</a>
